@@ -1,0 +1,34 @@
+{
+    "doctors": [
+        {
+            "id": "2",
+            "name": "Joseph",
+            "specialty": "ORTHOPEDICS"
+        },
+        {
+            "id": "5",
+            "name": "Ulrich",
+            "specialty": "CARDIOLOGY"
+        }
+    ],
+    "doctor": [
+        {
+            "id": "2",
+            "name": "Joseph",
+            "specialty": "ORTHOPEDICS",
+            "email": "joseph@voll.com",
+            "phone": "(555) 99595-888",
+            "address": "Av. das Graças Altas, 633 - Curitiba/PA",
+            "zip": "66.777-100"
+        },
+        {
+            "id": "5",
+            "name": "Ulrich",
+            "specialty": "CARDIOLOGY",
+            "email": "ulrich@voll.com",
+            "phone": "(777) 77676-333",
+            "address": "Av. das Graças Baixas, 744 - Curitiba/PA",
+            "zip": "67.888-011"
+        }
+    ]
+}
