@@ -8,6 +8,7 @@ It's a work in progress, it's not possible to schedule appointments yet.
 
 ## Tech-Stack
 
+Main technologies used in the project.
 
 <table>
       <thead>
@@ -28,5 +29,21 @@ It's a work in progress, it's not possible to schedule appointments yet.
               <td>Java</td>
               <td></td>
             </tr>
+            <tr>
+              <td>TypeScript</td>
+              <td>MySQL/MariaDB</td>
+              <td></td>
+            </tr>
       </tbody>
   </table>
+
+## Installation
+
+1. Configure the application.properties file in the api src folder and create a database with the configured name. Build and run the api.
+
+2. Go to the folder web-client/voll and run:
+
+```
+npm install
+npm run serve
+```
