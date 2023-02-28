@@ -32,15 +32,20 @@ export default defineComponent({
                 return
             }
 
-            const info = this.page === 'doctors' ? 'specialty' : 'phone'
+            const info = this.page === 'doctors' ? 'specialty' : this.page === 'patients' ? 'phone' : null
 
-            this.filteredEntities = this.entities.filter(entity => {
-                return entity.name.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1 ||
-                    entity[info].toLowerCase().indexOf(e.target.value.toLowerCase()) != -1;
-            })
-            this.filteredEntities.forEach(en => {
-                en.i = this.filteredEntities.indexOf(en)
-            })
+            if (info) {
+                this.filteredEntities = this.entities.filter(entity => {
+                    return entity.name.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1 ||
+                        entity[info].toLowerCase().indexOf(e.target.value.toLowerCase()) != -1;
+                })
+            } else {
+                this.filteredEntities = this.entities.filter(appointment => {
+                    return appointment.doctorName.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1 ||
+                        appointment.patientName.toLowerCase().indexOf(e.target.value.toLowerCase()) != -1
+                })
+            }
+
 
             this.$emit('filter', this.filteredEntities)
         }

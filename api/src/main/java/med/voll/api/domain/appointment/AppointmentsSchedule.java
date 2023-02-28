@@ -5,8 +5,11 @@ import med.voll.api.domain.appointment.validations.cancellation.AppointmentCance
 import med.voll.api.domain.appointment.validations.scheduling.AppointmentSchedulingValidator;
 import med.voll.api.domain.doctor.Doctor;
 import med.voll.api.domain.doctor.DoctorRepository;
+import med.voll.api.domain.patient.Patient;
 import med.voll.api.domain.patient.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,6 +52,10 @@ public class AppointmentsSchedule {
         return new AppointmentListingData(appointment);
     }
 
+    public Page<AppointmentDetailingData> list(Pageable pagination) {
+        return appointmentRepository.findAllByActiveTrue(pagination).map(AppointmentDetailingData::new);
+    }
+
     public void cancel(AppointmentDeletionData data) {
         if (!appointmentRepository.existsById(data.idAppointment())) {
             throw new ValidationException("Invalid appointment id");
@@ -72,4 +79,22 @@ public class AppointmentsSchedule {
         return doctorRepository.chooseRandomDoctorAvailable(data.specialty(), data.date());
     }
 
+    public Appointment getReferenceById(Long id) {
+        return appointmentRepository.getReferenceById(id);
+    }
+
+    public Doctor getDoctor(AppointmentUpdateData data) throws Exception {
+        if (data.idDoctor() != null) {
+            return doctorRepository.getReferenceById(data.idDoctor());
+        }
+        Doctor doctor = doctorRepository.chooseRandomDoctorAvailable(data.specialty(), data.date());
+        if (doctor == null) {
+            throw new ValidationException("No doctor available!");
+        }
+        return doctor;
+    }
+
+    public Patient getPatient(Long idPatient) {
+        return patientRepository.getReferenceById(idPatient);
+    }
 }

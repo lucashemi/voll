@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import med.voll.api.domain.doctor.Doctor;
 import med.voll.api.domain.patient.Patient;
 
+import javax.print.Doc;
 import java.time.LocalDateTime;
 
 @Table(name = "appointments")
@@ -44,4 +45,16 @@ public class Appointment {
                 this.reasonForCancellation = reasonForCancellation;
                 this.active = false;
         }
+
+    public void updateInformation(AppointmentUpdateData data, Doctor doctor, Patient patient) {
+            if (doctor != null) {
+                    this.doctor = doctor;
+            }
+            if (patient != null) {
+                    this.patient = patient;
+            }
+            if (data.date() != null) {
+                    this.date = data.date();
+            }
+    }
 }

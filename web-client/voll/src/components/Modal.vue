@@ -4,17 +4,26 @@
             <i class="fa-regular fa-user modal-icon"></i>
             <Title text="Do you want to deactivate this profile?" Class="title large" />
             <div class="modal-dados">
-                <Title id="modal-name" ref="modalName" text="Name" Class="title" />
+                <Title id="modal-name" ref="modalName" :text="name" Class="title" />
                 <div>
                     <p id="modal-info" ref="modalInfo" class="gray"></p>
                 </div>
             </div>
             <p>By deactivating this profile, your information will be disabled for searches and future appointments.</p>
             <p>Make sure there are no appointments scheduled, if so, the deactivation cannot be completed.</p>
-            <Button @click="closeModal($event)" @keyup.enter="closeModal($event)" id="modal-deactivate"
+            <Button @click="closeModal($event, true)" @keyup.enter="closeModal($event, true)" id="modal-deactivate"
                 Class="btn form-btn" Value="Deactivate this profile" />
-            <ButtonReverse @click="closeModal($event)" @keyup.enter="closeModal($event)" Class="btn-reverse form-btn"
-                Value="Cancel" />
+            <ButtonReverse @click="closeModal($event, false)" @keyup.enter="closeModal($event, false)"
+                Class="btn-reverse form-btn" Value="Cancel" />
+        </div>
+    </div>
+    <div class="none modal" id="modal2" ref="modal2">
+        <div class="modal-content">
+            <i class="fa-regular fa-user modal-icon"></i>
+            <Title text="It wasn't possible to deactivate the profile" Class="title large" />
+            <p>Make sure there are no appointments scheduled, if so, the deactivation cannot be completed.</p>
+            <ButtonReverse @click="closeModal2($event)" @keyup.enter="closeModal2($event)" Class="btn-reverse form-btn"
+                Value="Got it!" />
         </div>
     </div>
 </template>
@@ -34,9 +43,11 @@ export default defineComponent({
         Button,
         ButtonReverse
     },
-    data () {
+    data() {
         return {
-            token: sessionStorage.getItem('token')
+            token: sessionStorage.getItem('token'),
+            id: null,
+            name: null
         }
     },
     emits: ['list', 'treatForbidden'],
@@ -46,32 +57,34 @@ export default defineComponent({
         }
     },
     methods: {
-        closeModal(e) {
-            e.target.parentNode.parentNode.classList.add('none')
-        },
-        showModal(id, name, info) {
-            (this.$refs.modal as HTMLDivElement).classList.remove('none');
-            (this.$refs.modalName as HTMLHeadingElement).innerHTML = name;
-
-            if (this.page === 'doctors') {
-                (this.$refs.modalInfo as HTMLParagraphElement).innerHTML = info.charAt(0).toUpperCase() + info.toLowerCase().slice(1);
-            } else if (this.page === 'patients') {
-                (this.$refs.modalInfo as HTMLParagraphElement).innerHTML = info
-            }
-
-            const deactivateElement = document.getElementById('modal-deactivate')
-            const url = `http://localhost:8081/${this.page}/${id}`
-            deactivateElement.onclick = () => {
+        closeModal(e, deleting) {
+            if (deleting) {
+                const url = `http://localhost:8081/${this.page}/${this.id}`
                 axios.delete(url, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     }
                 }).then(response => {
                     console.log(response)
-                    this.$emit('list')
                 }).catch(error => {
-                    this.$emit('treatForbidden', error.response.status)
+                    console.log(error)
+                    e.target.parentNode.parentNode.nextSibling.classList.remove('none')
                 })
+            }
+            e.target.parentNode.parentNode.classList.add('none')
+            this.$emit('list')
+        },
+        closeModal2(e) {
+            e.target.parentNode.parentNode.classList.add('none')
+        },
+        showModal(id, name, info) {
+            (this.$refs.modal as HTMLDivElement).classList.remove('none');
+            this.name = name;
+            this.id = id
+            if (this.page === 'doctors') {
+                (this.$refs.modalInfo as HTMLParagraphElement).innerHTML = info.charAt(0).toUpperCase() + info.toLowerCase().slice(1);
+            } else if (this.page === 'patients') {
+                (this.$refs.modalInfo as HTMLParagraphElement).innerHTML = info
             }
         }
     }

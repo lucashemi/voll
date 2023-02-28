@@ -2,6 +2,7 @@ package med.voll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import med.voll.api.domain.patient.PatientListingData;
 import med.voll.api.domain.patient.Patient;
 import med.voll.api.domain.patient.PatientRepository;
@@ -53,6 +54,10 @@ public class PatientController {
     @Transactional
     public ResponseEntity delete(@PathVariable Long id) {
         Patient patient = patientRepository.getReferenceById(id);
+        var appointments = patientRepository.findAnyAppointmentFrom(id);
+        if (appointments != null) {
+            throw new ValidationException("Can't delete patient with active appointments");
+        }
         patient.delete();
 
         return ResponseEntity.noContent().build();

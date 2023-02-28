@@ -1,40 +1,40 @@
 <template>
     <SmallLogo />
     <Search :page="page" :entities="entities" @filter="update" @list="list" />
-    <ul class="list" id="list" v-if="entities && entities.length">
-        <li class="list-item" v-for="entity,index in entities" :key="index">
-            <h3 class="title">{{ entity.name }}
-                <i @click="detail($event, entity.id, index)" @keyup.enter="detail($event, entity.id, index)"
-                    class="fa-solid fa-caret-down fa-caret-up" tabindex="0"></i>
-            </h3>
-            <p v-if="page === 'doctors'">{{
-                entity.specialty.charAt(0).toUpperCase() +
-                    entity.specialty.toLowerCase().slice(1)
-            }}</p>
-            <p v-else-if="page === 'patients'">{{ entity.phone }}</p>
-            <div class="none">
-                <p class="gray">{{ entity.email }}</p>
-                <p v-if="page === 'doctors'" class="gray">{{ entity.phone }}</p>
-                <p v-else-if="page === 'patients'" class="gray">{{ entity.ssn }}</p>
-                <p class="gray">{{ entity.address && entity.address.addressLine1 }}</p>
-                <p class="gray">{{ entity.address && entity.address.addressLine2 }}</p>
-                <p class="gray">{{ entity.address && entity.address.city }} {{ entity.address && entity.address.state }}
-                    {{ entity.address && entity.address.postalCode }}</p>
-                <router-link :to="`form/${page}/${entity.id}`">
-                    <ButtonReverse Class="list-btn btn-reverse" Value="Edit"></ButtonReverse>
-                </router-link>
-                <ButtonReverse v-if="page === 'doctors'" @click="showModal(entity.id, entity.name, entity.specialty)"
-                    @keyup.enter="showModal(entity.id, entity.name, entity.specialty)" Class="list-btn btn-reverse"
-                    Value="Deactivate profile">
-                </ButtonReverse>
-                <ButtonReverse v-else-if="page === 'patients'" @click="showModal(entity.id, entity.name, entity.phone)"
-                    @keyup.enter="showModal(entity.id, entity.name, entity.phone)" Class="list-btn btn-reverse"
-                    Value="Deactivate profile">
-                </ButtonReverse>
-            </div>
-        </li>
-    </ul>
-    <Modal ref="modal" />
+        <ul class="list" id="list" v-if="entities && entities.length">
+            <li class="list-item" v-for="entity,index in entities" :key="index">
+                <h3 class="title">{{ entity.name }}
+                    <i @click="detail($event, entity.id, index)" @keyup.enter="detail($event, entity.id, index)"
+                        class="fa-solid fa-caret-down fa-caret-up" tabindex="0"></i>
+                </h3>
+                <p v-if="page === 'doctors'">{{
+                    entity.specialty.charAt(0).toUpperCase() +
+                        entity.specialty.toLowerCase().slice(1)
+                }}</p>
+                <p v-else-if="page === 'patients'">{{ entity.phone }}</p>
+                <div class="none">
+                    <p class="gray">{{ entity.email }}</p>
+                    <p v-if="page === 'doctors'" class="gray">{{ entity.phone }}</p>
+                    <p v-else-if="page === 'patients'" class="gray">{{ entity.ssn }}</p>
+                    <p class="gray">{{ entity.address && entity.address.addressLine1 }}</p>
+                    <p class="gray">{{ entity.address && entity.address.addressLine2 }}</p>
+                    <p class="gray">{{ entity.address && entity.address.city }} {{ entity.address && entity.address.state }}
+                        {{ entity.address && entity.address.postalCode }}</p>
+                    <router-link :to="`form/${page}/${entity.id}`">
+                        <ButtonReverse Class="list-btn btn-reverse" Value="Edit"></ButtonReverse>
+                    </router-link>
+                    <ButtonReverse v-if="page === 'doctors'" @click="showModal(entity.id, entity.name, entity.specialty)"
+                        @keyup.enter="showModal(entity.id, entity.name, entity.specialty)" Class="list-btn btn-reverse"
+                        Value="Deactivate profile">
+                    </ButtonReverse>
+                    <ButtonReverse v-else-if="page === 'patients'" @click="showModal(entity.id, entity.name, entity.phone)"
+                        @keyup.enter="showModal(entity.id, entity.name, entity.phone)" Class="list-btn btn-reverse"
+                        Value="Deactivate profile">
+                    </ButtonReverse>
+                </div>
+            </li>
+        </ul>
+    <Modal @list="list" ref="modal" :page="page"/>
 </template>
 
 <script lang="ts">
@@ -110,8 +110,6 @@ export default defineComponent({
                 }
             }).catch(error => {
                 console.log(error)
-                const code = error.response.status
-                this.handleForbidden(code)
             })
         },
         handleForbidden(code) {
