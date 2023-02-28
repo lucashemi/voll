@@ -19,5 +19,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("""
         select p.id from Patient p join Appointment a on p.id = a.patient.id where a.active = true and p.id = :id
         """)
-    Long findAnyAppointmentFrom(Long id);
+    Long findAnyAppointmentFromPatient(Long id);
 }

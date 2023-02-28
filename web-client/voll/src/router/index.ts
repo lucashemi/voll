@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/AuthView.vue'
+import LoginView from '../views/AuthenticationView.vue'
 import DoctorsView from '../views/DoctorsView.vue'
 import PatientsView from '../views/PatientsView.vue'
 import AppointmentsView from '../views/AppointmentsView.vue'

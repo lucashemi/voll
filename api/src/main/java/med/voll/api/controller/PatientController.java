@@ -54,7 +54,7 @@ public class PatientController {
     @Transactional
     public ResponseEntity delete(@PathVariable Long id) {
         Patient patient = patientRepository.getReferenceById(id);
-        var appointments = patientRepository.findAnyAppointmentFrom(id);
+        var appointments = patientRepository.findAnyAppointmentFromPatient(id);
         if (appointments != null) {
             throw new ValidationException("Can't delete patient with active appointments");
         }

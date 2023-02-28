@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <main class="container">
+    <main class="container margin-top">
         <Logo Class="logo-huge" />
         <Title text="Managing your clinic" Class="title"/>
         <p>Choose in which session you want to start:</p>
@@ -67,6 +67,10 @@ export default defineComponent({
 
 .big-icon {
     font-size: 3rem;
+}
+
+.margin-top {
+    margin-top: 2rem;
 }
 
 @media screen and (max-width: 900px) {

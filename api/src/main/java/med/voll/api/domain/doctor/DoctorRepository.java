@@ -28,4 +28,9 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
         where d.id = :id
         """)
     Boolean findActiveById(Long id);
+
+    @Query("""
+        select d.id from Doctor d join Appointment a on d.id = a.doctor.id where a.active = true and d.id = :id
+        """)
+    Long findAnyAppointmentFromDoctor(Long id);
 }

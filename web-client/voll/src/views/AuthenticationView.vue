@@ -9,7 +9,7 @@
             <Fieldset>
                 <label class="field-label" for="password">Password</label>
                 <input type="password" class="field-input margin-top" id="password" v-model="password" required/>
-                <span class="error-message"></span>
+                <span ref="invalid" class="error-message"></span>
             </Fieldset>
             <div class="margin-top">
                 <Button @click.prevent="login()" Value="Sign In" Class="btn form-btn" Id="send" Type="submit" />
@@ -47,12 +47,17 @@ export default defineComponent({
                 password: this.password
             })
                 .then(response => {
+                    (this.$refs.invalid as HTMLElement).innerHTML = ''
                     sessionStorage.setItem("token", response.data.token)
                     this.$router.push('/')
                 })
                 .catch(error => {
                     const errors = error.response.data
                     const code = error.response.status
+                    console.log(code)
+                    if (code === 403) {
+                        (this.$refs.invalid as HTMLElement).innerHTML = 'Invalid email or password'
+                    }
                     this.handleBadRequest(code, errors)
                 })
         },

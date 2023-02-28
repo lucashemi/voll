@@ -76,6 +76,7 @@ export default defineComponent({
                     }
                 }).then(response => {
                     console.log(response)
+                    this.$emit('list')
                 }).catch(error => {
                     console.log(error)
                 })

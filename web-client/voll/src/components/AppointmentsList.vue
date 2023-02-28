@@ -23,7 +23,7 @@
             </div>
         </li>
     </ul>
-    <AppointmentModal ref="modal" :page="page" />
+    <AppointmentModal ref="modal" :page="page" @list="list"/>
 </template>
 
 <script lang="ts">
@@ -34,6 +34,7 @@ import ButtonReverse from './ButtonReverse.vue';
 import AppointmentModal from './AppointmentModal.vue';
 import Search from './Search.vue';
 import IAppointment from '@/interfaces/IAppointment';
+import handleBadRequest from '@/utilities/handleBadRequest';
 
 
 export default defineComponent({
@@ -76,6 +77,9 @@ export default defineComponent({
                 })
             }).catch(error => {
                 console.log(error)
+                const code = error.response.status
+                const errors = error.response.data
+                this.handleBadRequest(code, errors)
             })
         },
         handleForbidden(code) {
@@ -86,7 +90,8 @@ export default defineComponent({
         },
         showModal(appointment) {
             (this.$refs.modal as typeof AppointmentModal).showModal(appointment)
-        }
+        },
+        handleBadRequest
     },
     created() {
         this.list()

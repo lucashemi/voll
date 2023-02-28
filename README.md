@@ -1,10 +1,12 @@
-# Voll - Managing your clinic (WIP)
+# Voll - Managing your clinic
 
 Voll is a webapp for managing medical clinics, you can register doctors and patients, schedule appointments and easily manage your clinic.
 
 The back-end is a rest api built in java/spring and the front-end is made with vue.js.
 
-It's a work in progress, it's not possible to schedule appointments yet.
+The main functions are done (doctor, patient and appointment crud).
+
+The front-end code needs some refactoring and things like colored notifications, more time options when scheduling a appointment. 
 
 ## Tech-Stack
 
@@ -39,7 +41,7 @@ Main technologies used in the project.
 
 ## Installation
 
-1. Configure the application.properties file in the api src folder and create a database with the configured name. Build and run the api.
+1. Configure the application.properties file in the api/src/main/resources folder and create a database with the configured name and a user to login. Build and run the api.
 
 2. Go to the folder web-client/voll and run:
 
